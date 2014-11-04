@@ -1,10 +1,7 @@
 # SwiftClient
----
 A Simple HTTP Client written in Swift
 
 ## Installation
----
-
 1. If you are using git then add Dollar as a submodule using `git submodule add https://github.com/theadam/SwiftClient.git` otherwise download the project using `git clone https://github.com/theadam/SwiftClient.git` in your project folder.
 2. Open the SwiftClient folder. Drag SwiftClient.xcodeproj into the file navigator of your Xcode project.
 3. In Xcode, navigate to the target configuration window by clicking on the blue project icon, and selecting the application target under the "Targets" heading in the sidebar.
@@ -13,7 +10,6 @@ A Simple HTTP Client written in Swift
 6. In your project file `import SwiftClient` and you can start using SwiftClient.
 
 ## Usage
----
 ### Basic Example
 
 	var client = Client()
@@ -34,7 +30,7 @@ A Simple HTTP Client written in Swift
 			}
 		})
 ### Client
----
+===
 A Client is like a request factory.  Client objects use functions to create Request Objects.
 
 `client.get(url)`
@@ -74,7 +70,7 @@ Adds a default error handler for any request made with a client
 		// handle error
 	})
 ### Request
----
+===
 #### Setting headers
 Headers can be set on the request by passing in a key and value or a dictionary of string to string.
 	
@@ -144,7 +140,7 @@ The request is performed and handled by passing in a response handler and an opt
 	Client().get(url).end(responseHandler, onError: errorHandler); // Overrides all other error handlers.
 
 ### Response
----
+===
 
 #### Fields
 `response.status` - The HTTP response status code.
