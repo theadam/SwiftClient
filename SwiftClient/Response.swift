@@ -69,7 +69,7 @@ public class Response{
         
         // sugar
         self.accepted = 202 == status;
-        self.noContent = 204 == status || 1223 == status;
+        self.noContent = 204 == status
         self.badRequest = 400 == status;
         self.unauthorized = 401 == status;
         self.notAcceptable = 406 == status;

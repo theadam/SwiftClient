@@ -11,6 +11,7 @@
 		D004FD921A0202AC007E3881 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D004FD911A0202AC007E3881 /* Body.swift */; };
 		D004FD941A020308007E3881 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D004FD931A020308007E3881 /* Response.swift */; };
 		D004FD961A020347007E3881 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = D004FD951A020347007E3881 /* Client.swift */; };
+		D03FA08D1A085D89002B827C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D03FA08C1A085D89002B827C /* README.md */; };
 		D0CB88E219FC645300DA6940 /* SwiftClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CB88D619FC645300DA6940 /* SwiftClient.framework */; };
 		D0CB88E919FC645300DA6940 /* SwiftClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB88E819FC645300DA6940 /* SwiftClientTests.swift */; };
 		D0CB88F319FC64BC00DA6940 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB88F219FC64BC00DA6940 /* Request.swift */; };
@@ -31,6 +32,7 @@
 		D004FD911A0202AC007E3881 /* Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		D004FD931A020308007E3881 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		D004FD951A020347007E3881 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		D03FA08C1A085D89002B827C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D0CB88D619FC645300DA6940 /* SwiftClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0CB88DA19FC645300DA6940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0CB88E119FC645300DA6940 /* SwiftClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +63,7 @@
 		D0CB88CC19FC645300DA6940 = {
 			isa = PBXGroup;
 			children = (
+				D03FA08C1A085D89002B827C /* README.md */,
 				D0CB88D819FC645300DA6940 /* SwiftClient */,
 				D0CB88E519FC645300DA6940 /* SwiftClientTests */,
 				D0CB88D719FC645300DA6940 /* Products */,
@@ -222,6 +225,7 @@
 			files = (
 				D004FD941A020308007E3881 /* Response.swift in Sources */,
 				D004FD921A0202AC007E3881 /* Body.swift in Sources */,
+				D03FA08D1A085D89002B827C /* README.md in Sources */,
 				D0CB88F319FC64BC00DA6940 /* Request.swift in Sources */,
 				D004FD961A020347007E3881 /* Client.swift in Sources */,
 				D004FD901A02026B007E3881 /* Constants.swift in Sources */,
