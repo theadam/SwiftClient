@@ -2,7 +2,7 @@
 A Simple HTTP Client written in Swift
 
 ## Installation
-1. If you are using git then add Dollar as a submodule using `git submodule add https://github.com/theadam/SwiftClient.git` otherwise download the project using `git clone https://github.com/theadam/SwiftClient.git` in your project folder.
+1. If you are using git then add SwiftClient as a submodule using `git submodule add https://github.com/theadam/SwiftClient.git` otherwise download the project using `git clone https://github.com/theadam/SwiftClient.git` in your project folder.
 2. Open the SwiftClient folder. Drag SwiftClient.xcodeproj into the file navigator of your Xcode project.
 3. In Xcode, navigate to the target configuration window by clicking on the blue project icon, and selecting the application target under the "Targets" heading in the sidebar.
 4. In the tab bar at the top of that window, open the "Build Phases" panel.
