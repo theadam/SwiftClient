@@ -10,12 +10,12 @@ A Simple HTTP Client written in Swift
 6. In your project file `import SwiftClient` and you can start using SwiftClient.
 
 ## Usage
-### Basic Example
+#### Basic Example
 
 	var client = Client()
 		.baseUrl("http://myapi.org")
 		.onError({e in alertError(e)});
-	
+
 	// GET http://myapi.org/get?key=value&key2=value2
 	client.get("/get")
 		.query("key", "value")
@@ -45,101 +45,101 @@ A Client is like a request factory.  Client objects use functions to create Requ
 
 `client.head(url)`
 
-### Middleware
+#### Middleware
 Middleware can be used as plugins that affect every request created by a client.
-    
-    Client().use({(req:Request) -> Request in 
+
+    Client().use({(req:Request) -> Request in
 	    // perform actions on the request.
     })
-### Base URL
+#### Base URL
 Sets the base URL for any request which has a URL that starts with a "/"
-	
+
 	var client = Client().baseUrl("http://myapi.org");
 	client.get("/endpoint").end(...);
-### Response Transformer
+#### Response Transformer
 Adds a function that affects every response retrieved from a clients requests.
 
-	Client().transform({(res:Response) -> Response in 
+	Client().transform({(res:Response) -> Response in
 		// perform actions on the response
 	})
-	
-### Error Handler
+
+#### Error Handler
 Adds a default error handler for any request made with a client
 
-	Client().onError({(err:NSError) -> Void in 
+	Client().onError({(err:NSError) -> Void in
 		// handle error
 	})
 ## Request
-### Setting headers
+#### Setting headers
 Headers can be set on the request by passing in a key and value or a dictionary of string to string.
-	
+
 	Client().get(url).set(key, value)
 
-	
+
 	Client().get(url).set([key : value, key2: value2])
-	
-### Middleware
+
+#### Middleware
 Middleware can be used as plugins that affect a request.
-    
-    Client().get(url).use({(req:Request) -> Request in 
+
+    Client().get(url).use({(req:Request) -> Request in
 	    // perform actions on the request.
     })
 
-### Response Transformer
+#### Response Transformer
 Adds a function that affects the response retrieved from a request.
 
-	Client().get(url).transform({(res:Response) -> Response in 
+	Client().get(url).transform({(res:Response) -> Response in
 		// perform actions on the response
 	})
-	
-### Setting the content type
+
+#### Setting the content type
 The content type can be set using a short hand name (json, html, form, urlencoded, form, form-data, xml), or the full type (application/json for example).
 
 	Client().get(url).type("json")
-	
-### Query Parameters
+
+#### Query Parameters
 Query parameters can be added to the URL by passing in a key and value or a dictionary of string to string.
 
 	Client().get(url).query(key, value)
-	
+
 	Client().get(url).query([key : value, key2: value2])
-	
-### Request Body
+
+#### Request Body
 Data can be sent in the request body.  If the content type is set to "form" or "json", the request attempts to format the data to the appropriate format and send it.  A dictionary passed in defaults the type to JSON.
 
 	Client.post(url).type("json").send([1,2,3,4]);
 
 	Client.post(url).send([key : value, key2 : value2]);
-	
+
 	Client.post(url).type("form").send([key : value, key2 : value2]);
-	
+
 	Client.post(url).type("html").send("<html>").send("</html>");
-	
-### Request timeout interval
+
+#### Request timeout interval
 Sets the request's timeout interval.
 
-	Client().get(url).timeout(timeoutInSeconds);	
-### NSURLSessionDelegate
+	Client().get(url).timeout(timeoutInSeconds);
+#### NSURLSessionDelegate
 Sets the underlying NSURLSessionDelegate.
 
 	Client().get(url).delegate(delegate);
-	
-### Handler Request Errors
+
+#### Handler Request Errors
 Adds a error handler for a request.
 
-	Client().get(url).onError({(err:NSError) -> Void in 
+	Client().get(url).onError({(err:NSError) -> Void in
 		// handle error
 	})
-	
-### Performing the request
+
+#### Performing the request
 The request is performed and handled by passing in a response handler and an optional error handler.
 
 	Client().get(url).end(responseHandler);
-	
+
 	Client().get(url).end(responseHandler, onError: errorHandler); // Overrides all other error handlers.
 
 ## Response
-### Fields
+#### Fields
 `response.status` - The HTTP response status code.
 
 `response.text` - An optional string containing the text of the body of the response.
@@ -150,7 +150,7 @@ The request is performed and handled by passing in a response handler and an opt
 
 `response.headers` - A dictionary of string to string containing the headers of the response.
 
-### status code helpers
+#### status code helpers
 Each of these booleans are helpers to determine the status of the Response
 
 `info` - 1xx
