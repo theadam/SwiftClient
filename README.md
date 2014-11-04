@@ -1,9 +1,9 @@
 # SwiftClient
-====
+---
 A Simple HTTP Client written in Swift
 
 ## Installation
-===
+---
 
 1. If you are using git then add Dollar as a submodule using `git submodule add https://github.com/theadam/SwiftClient.git` otherwise download the project using `git clone https://github.com/theadam/SwiftClient.git` in your project folder.
 2. Open the SwiftClient folder. Drag SwiftClient.xcodeproj into the file navigator of your Xcode project.
@@ -13,7 +13,7 @@ A Simple HTTP Client written in Swift
 6. In your project file `import SwiftClient` and you can start using SwiftClient.
 
 ## Usage
-===
+---
 ### Basic Example
 
 	var client = Client()
