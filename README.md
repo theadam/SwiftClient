@@ -153,26 +153,26 @@ The request is performed and handled by passing in a response handler and an opt
 ### status code helpers
 Each of these booleans are helpers to determine the status of the Response
 
-`info` -> 1xx
+`info` - 1xx
 
-`ok` -> 2xx
+`ok` - 2xx
 
-`clientError` -> 4xx
+`clientError` - 4xx
 
-`serverError` -> 5xx
+`serverError` - 5xx
 
-`error` -> 4xx/5xx
+`error` - 4xx/5xx
 
-`accepted` -> 202
+`accepted` - 202
 
-`noContent` -> 404
+`noContent` - 404
 
-`badRequest` -> 400
+`badRequest` - 400
 
-`unauthorized` -> 401
+`unauthorized` - 401
 
-`notAcceptable` -> 406
+`notAcceptable` - 406
 
-`notFound` -> 404
+`notFound` - 404
 
-`forbidden` -> 403
+`forbidden` - 403
