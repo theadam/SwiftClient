@@ -8,82 +8,90 @@
 
 import Foundation
 
+internal func base64Encode(string:String) -> String {
+    return dataToString(stringToData(string).base64EncodedDataWithOptions(nil))
+}
+
 internal func uriDecode(string:String) -> String{
-    return string.stringByRemovingPercentEncoding!;
+    return string.stringByRemovingPercentEncoding!
 }
 
 internal func uriEncode(string:AnyObject) -> String{
-    return string.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!;
+    return string.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!
 }
 
 internal func stringToData(string:String) -> NSData {
-    return string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!;
+    return string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!
+}
+
+internal func dataToString(data:NSData) -> String {
+    return NSString(data: data, encoding: 1)!
 }
 
 internal func queryPair(key:String, value:AnyObject) -> String{
-    return uriEncode(key) + "=" + uriEncode(value);
+    return uriEncode(key) + "=" + uriEncode(value)
 }
 
 internal func queryString(query:AnyObject) -> String?{
-    var pairs:[String]?;
+    var pairs:[String]?
     if let dict = query as? Dictionary<String, AnyObject> {
-        pairs = Array();
+        pairs = Array()
         for (key, value) in dict {
-            pairs!.append(queryPair(key, value));
+            pairs!.append(queryPair(key, value))
         }
     }
     else if let array = query as? [String] {
-        pairs = array;
+        pairs = array
     }
     
     if let pairs = pairs {
-        return "&".join(pairs);
+        return "&".join(pairs)
     }
     
-    return nil;
+    return nil
 }
 
 // PARSERS
 private func parseJson(data:NSData, string: String) -> AnyObject?{
-    var error:NSError?;
-    return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(), error: &error);
-};
+    var error:NSError?
+    return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(), error: &error)
+}
 
 private func parseForm(data:NSData, string:String) -> AnyObject?{
-    let pairs = string.componentsSeparatedByString("&");
+    let pairs = string.componentsSeparatedByString("&")
     
-    var form:[String : String] = Dictionary();
+    var form:[String : String] = Dictionary()
     
     for pair in pairs {
-        let parts = pair.componentsSeparatedByString("=");
-        form[uriDecode(parts[0])] = uriDecode(parts[1]);
+        let parts = pair.componentsSeparatedByString("=")
+        form[uriDecode(parts[0])] = uriDecode(parts[1])
     }
     
-    return form;
+    return form
 }
 
 
 //SERIALIZERS
 private func serializeJson(data:AnyObject) -> NSData? {
     if(data as? Array<AnyObject> != nil || data as? Dictionary<String, AnyObject> != nil){
-        var error:NSError?;
+        var error:NSError?
         return NSJSONSerialization.dataWithJSONObject(data, options: NSJSONWritingOptions(), error: &error)
     }
     else if let dataString = data as? String{
-        return stringToData(dataString);
+        return stringToData(dataString)
     }
-    return nil;
+    return nil
 }
 
 private func serializeForm(data:AnyObject) -> NSData? {
     if let queryString = queryString(data) {
-        return stringToData(queryString);
+        return stringToData(queryString)
     }
     else if let dataString = (data as? String ?? toString(data)) {
-        return stringToData(dataString);
+        return stringToData(dataString)
     }
     
-    return nil;
+    return nil
 }
 
 internal let types = [
@@ -93,14 +101,14 @@ internal let types = [
     "urlencoded": "application/x-www-form-urlencoded",
     "form": "application/x-www-form-urlencoded",
     "form-data": "application/x-www-form-urlencoded"
-];
+]
 
 internal let serializers = [
     "application/x-www-form-urlencoded": serializeForm,
     "application/json": serializeJson
-];
+]
 
 internal let parsers = [
     "application/x-www-form-urlencoded": parseForm,
     "application/json": parseJson
-];
+]

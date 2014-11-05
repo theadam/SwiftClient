@@ -92,7 +92,7 @@ public class Response{
         self.data = rawData;
         self.body = rawData;
         if let data = rawData {
-            self.text = NSString(data: data, encoding: 1)!;
+            self.text = dataToString(data);
             if let type = self.type {
                 if let parser = parsers[type] {
                     self.body = parser(data, self.text!);

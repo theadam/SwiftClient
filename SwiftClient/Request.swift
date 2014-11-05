@@ -167,6 +167,12 @@ public class Request {
         return self;
     }
     
+    public func auth(username:String, _ password:String) -> Request {
+        let authString = base64Encode(username + ":" + password);
+        self.set("authorization", "Basic \(authString)")
+        return self;
+    }
+    
     /// Sends the request using the passed in completion handler and the optional error handler
     public func end(done: (Response) -> Void, onError errorHandler: ((NSError) -> Void)? = nil) {
         if(self.query.count > 0){
@@ -194,10 +200,10 @@ public class Request {
             }
             else if let type = self.getContentType(){
                 if let serializer = serializers[type]{
-                    request.HTTPBody = serializer(self.data!);
+                    request.HTTPBody = serializer(self.data!)
                 }
                 else {
-                    request.HTTPBody = toString(self.data!).dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true);
+                    request.HTTPBody = stringToData(toString(self.data!))
                 }
             }
         }

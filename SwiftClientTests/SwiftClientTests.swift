@@ -298,5 +298,20 @@ class SwiftClientTests: XCTestCase {
         .end(self.shouldNotSucceed, onError: onError3);
         wait();
     }
+    
+    func testAuth(){
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let json = Body(res.body);
+            XCTAssertEqual(json["authenticated"].value as Int, 1, "authenticated should be equal to 1")
+            XCTAssertEqual(json["user"].value as String, "username", "user should be equal to 1")
+            println(json);
+            self.expectation.fulfill();
+        }
+        request.get("/basic-auth/username/password")
+            .auth("username", "password")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
 }
 
