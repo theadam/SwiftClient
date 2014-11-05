@@ -107,13 +107,13 @@ Query parameters can be added to the URL by passing in a key and value or a dict
 #### Request Body
 Data can be sent in the request body.  If the content type is set to "form" or "json", the request attempts to format the data to the appropriate format and send it.  A dictionary passed in defaults the type to JSON.
 
-	Client.post(url).type("json").send([1,2,3,4]);
+	Client().post(url).type("json").send([1,2,3,4]);
 
-	Client.post(url).send([key : value, key2 : value2]);
+	Client().post(url).send([key : value, key2 : value2]);
 
-	Client.post(url).type("form").send([key : value, key2 : value2]);
+	Client().post(url).type("form").send([key : value, key2 : value2]);
 
-	Client.post(url).type("html").send("<html>").send("</html>");
+	Client().post(url).type("html").send("<html>").send("</html>");
 
 #### Request timeout interval
 Sets the request's timeout interval.
