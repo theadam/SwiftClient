@@ -115,6 +115,11 @@ Data can be sent in the request body.  If the content type is set to "form" or "
 
 	Client().post(url).type("html").send("<html>").send("</html>");
 
+#### Basic access authentication
+Performs basic HTTP authentication for a request.
+
+	Client().get(url).auth("username", "password");
+	
 #### Request timeout interval
 Sets the request's timeout interval.
 
