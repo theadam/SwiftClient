@@ -308,10 +308,127 @@ class SwiftClientTests: XCTestCase {
             println(json);
             self.expectation.fulfill();
         }
-        request.get("/basic-auth/username/password")
+        request.get("/hidden-basic-auth/username/password")
             .auth("username", "password")
             .end(done, onError: self.defaultError);
         wait();
     }
+    
+    func testMultipartFields(){
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let form = Body(res.body)["form"];
+            XCTAssertEqual(form["key"].value as String, "value", "form data should have been sent");
+            XCTAssertEqual(form["key2"].value as String, "value2", "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+            .field("key", "value")
+            .field("key2", "value2")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
+    func testMultipartFiles(){
+        var htmlString1 = "<html><body>1</body></html>";
+        var htmlString2 = "<html><body>2</body></html>";
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let files = Body(res.body)["files"];
+            XCTAssertEqual(files["file1"].value as String, htmlString1, "form data should have been sent");
+            XCTAssertEqual(files["file2"].value as String, htmlString2, "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+            .attach("file1", htmlString1.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, "file1.html")
+            .attach("file2", htmlString2.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, "file2.html")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
+    func testMultipartMixed(){
+        var htmlString1 = "<html><body>1</body></html>";
+        var htmlString2 = "<html><body>2</body></html>";
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let files = Body(res.body)["files"];
+            XCTAssertEqual(files["file1"].value as String, htmlString1, "form data should have been sent");
+            XCTAssertEqual(files["file2"].value as String, htmlString2, "form data should have been sent");
+            let form = Body(res.body)["form"];
+            XCTAssertEqual(form["key"].value as String, "value", "form data should have been sent");
+            XCTAssertEqual(form["key2"].value as String, "value2", "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+            .attach("file1", htmlString1.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, "file1.html")
+            .attach("file2", htmlString2.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, "file2.html")
+            .field("key", "value")
+            .field("key2", "value2")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
+    func testMultipartFilesWithMime(){
+        var htmlString1 = "<html><body>1</body></html>";
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let files = Body(res.body)["files"];
+            XCTAssertEqual(files["file1"].value as String, htmlString1, "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+        .attach("file1", htmlString1.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!, "file1.html", withMimeType: "text/html")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
+    func testMultipartPathFilesNoFileName(){
+        var filePath:String = NSBundle(forClass: self.classForCoder).pathForResource("test", ofType: "html")!;
+        var fileContents = NSString(data: NSData(contentsOfFile: filePath)!, encoding: NSUTF8StringEncoding)!;
+        
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let files = Body(res.body)["files"];
+            XCTAssertEqual(files["file1"].value as NSString, fileContents, "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+            .attach("file1", filePath)
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
+    func testMultipartPathFilesNoMimeType(){
+        var filePath:String = NSBundle(forClass: self.classForCoder).pathForResource("test", ofType: "html")!;
+        var fileContents = NSString(data: NSData(contentsOfFile: filePath)!, encoding: NSUTF8StringEncoding)!;
+        
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let files = Body(res.body)["files"];
+            XCTAssertEqual(files["file1"].value as NSString, fileContents, "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+            .attach("file1", filePath, "notTest.html")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
+    func testMultipartPathFilesMimeType(){
+        var filePath:String = NSBundle(forClass: self.classForCoder).pathForResource("test", ofType: "html")!;
+        var fileContents = NSString(data: NSData(contentsOfFile: filePath)!, encoding: NSUTF8StringEncoding)!;
+        
+        let done = { (res: Response) -> Void in
+            XCTAssertEqual(res.ok, true);
+            let files = Body(res.body)["files"];
+            XCTAssertEqual(files["file1"].value as NSString, fileContents, "form data should have been sent");
+            self.expectation.fulfill();
+        }
+        request.post("/post")
+        .attach("file1", filePath, "notTest.html", withMimeType: "text/html")
+            .end(done, onError: self.defaultError);
+        wait();
+    }
+    
 }
 

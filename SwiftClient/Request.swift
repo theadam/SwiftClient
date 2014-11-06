@@ -17,12 +17,13 @@ public class Request {
     var data:AnyObject?;
     var headers: [String : String];
     public var url:String;
-    var method: String;
+    let method: String;
     var delegate: NSURLSessionDelegate?;
     var timeout:Double;
     var transformer:(Response) -> Response = {$0};
     var query:[String] = Array();
     var errorHandler:((NSError) -> Void);
+    var formData:FormData?;
     
     internal init(_ method: String, _ url: String, _ errorHandler:(NSError) -> Void){
         self.method = method;
@@ -167,10 +168,45 @@ public class Request {
         return self;
     }
     
+    /// Adds Basic HTTP Auth to the request
     public func auth(username:String, _ password:String) -> Request {
         let authString = base64Encode(username + ":" + password);
         self.set("authorization", "Basic \(authString)")
         return self;
+    }
+    
+    private func getFormData() -> FormData {
+        if(self.formData == nil) {
+            self.formData = FormData();
+        }
+        
+        return self.formData!;
+    }
+    
+    /// Adds a field to a multipart request
+    public func field(name:String, _ value:String) -> Request {
+        self.getFormData().append(name, value);
+        return self;
+    }
+    
+    /// Attached a file to a multipart request.  If the mimeType isnt given, it will be inferred.
+    public func attach(name:String, _ data:NSData, _ filename:String, withMimeType mimeType:String? = nil) -> Request {
+        self.getFormData().append(name, data, filename, mimeType)
+        return self
+    }
+    
+    /// Attached a file to a multipart request.  If the mimeType isnt given, it will be inferred.  
+    /// If the filename isnt given it will be pulled from the path
+    public func attach(name:String, _ path:String, _ filename:String? = nil, withMimeType mimeType:String? = nil) -> Request {
+        var basename:String! = filename;
+        if(filename == nil){
+            basename = path.lastPathComponent;
+        }
+        let data = NSData(contentsOfFile: path)
+        
+        self.getFormData().append(name, data ?? NSData(), basename, mimeType)
+        
+        return self
     }
     
     /// Sends the request using the passed in completion handler and the optional error handler
@@ -190,27 +226,35 @@ public class Request {
         
         request.HTTPMethod = self.method;
         
+        if(self.method != "GET" && self.method != "HEAD") {
+            if(self.formData != nil) {
+                request.HTTPBody = self.formData!.getBody();
+                self.type(self.formData!.getContentType());
+                self.set("Content-Length", toString(request.HTTPBody?.length));
+            }
+            else if(self.data != nil){
+                if let data = self.data! as? NSData {
+                    request.HTTPBody = data;
+                }
+                else if let type = self.getContentType(){
+                    if let serializer = serializers[type]{
+                        request.HTTPBody = serializer(self.data!)
+                    }
+                    else {
+                        request.HTTPBody = stringToData(toString(self.data!))
+                    }
+                }
+            }
+        }
+        
         for (key, value) in self.headers {
             request.setValue(value, forHTTPHeaderField: key);
         }
-        
-        if(self.data != nil && self.method != "GET" && self.method != "HEAD"){
-            if let data = self.data! as? NSData {
-                request.HTTPBody = data;
-            }
-            else if let type = self.getContentType(){
-                if let serializer = serializers[type]{
-                    request.HTTPBody = serializer(self.data!)
-                }
-                else {
-                    request.HTTPBody = stringToData(toString(self.data!))
-                }
-            }
-        }
+                
         let task = session.dataTaskWithRequest(request, completionHandler:
             {(data: NSData?, response: NSURLResponse?, error: NSError!) -> Void in
                 if let response = response as? NSHTTPURLResponse {
-                    done(self.transformer(Response(response, data)));
+                    done(self.transformer(Response(response, self, data)));
                 }
                 else if errorHandler != nil {
                     errorHandler!(error);

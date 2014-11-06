@@ -35,6 +35,8 @@ public class Response{
     public let notFound: Bool;
     public let forbidden: Bool;
     
+    public let request:Request;
+    
     public let headers: [String : String];
     
     private func trim(s:String) -> String{
@@ -51,7 +53,9 @@ public class Response{
         });
     }
     
-    init(_ response: NSHTTPURLResponse, _ rawData: NSData?){
+    init(_ response: NSHTTPURLResponse, _ request: Request, _ rawData: NSData?){
+        
+        self.request = request;
         
         let status = response.statusCode;
         let type = response.statusCode / 100 | 0;

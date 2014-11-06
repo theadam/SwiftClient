@@ -115,11 +115,34 @@ Data can be sent in the request body.  If the content type is set to "form" or "
 
 	Client().post(url).type("html").send("<html>").send("</html>");
 
-#### Basic access authentication
-Performs basic HTTP authentication for a request.
+#### Multipart Requests / File Uploads
+Multipart requests can be made with fields and attaching files.  The content-type is set automatically with this type of request.  If a path is attached that does not exist, the contents of the attachment will be empty.
 
-	Client().get(url).auth("username", "password");
-	
+These functions are not compatible with other functions that add data to the body of the request.
+
+	// Adds a field to the multipart data
+	Client().post(url).field("key", "value")
+
+	// Attaches a file to field fileKey, with data content, and a filename of filename.ext (and an inferred MIMEType).
+	Client().post(url).attach("fileKey", NSData(contentsOfFile: filePath), "filename.ext")
+
+	// Attaches a file to field imageKey, with data content, a filename of image.png, and an explicit MIMEType of image/png
+	Client().post(url).attach("imageKey", NSData(contentsOfFile: "image.png"), "image.png", withMimeType: "image/png")
+
+	// Attaches a file located at /path/to/image.png to the field imageKey.  
+	// The filename in the form is image.png, and the MIMEType is inferred.
+	Client().post(url).attach("imageKey", "/path/to/image.png")
+
+	// Attaches a file located at /path/to/image.png to the field imageKey.  
+	// The filename in the form is formImage.png, and the MIMEType is inferred.
+	Client().post(url).attach("imageKey", "/path/to/image.png", "formImage.png")
+
+	// Attaches a file located at /path/to/image.png to the field imageKey.  
+	// The filename in the form is formImage.png, and the MIMEType is explicitly set to image/png.
+	Client().post(url).attach("imageKey", "/path/to/image.png", "formImage.png", withMimeType: "image/png")
+
+The MIMEType argument is optional.  If it is not provided, SwiftClient attempts to infer it from the file extension.
+
 #### Request timeout interval
 Sets the request's timeout interval.
 

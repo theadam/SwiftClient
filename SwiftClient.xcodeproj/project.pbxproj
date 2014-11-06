@@ -14,6 +14,8 @@
 		D0CB88E219FC645300DA6940 /* SwiftClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CB88D619FC645300DA6940 /* SwiftClient.framework */; };
 		D0CB88E919FC645300DA6940 /* SwiftClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB88E819FC645300DA6940 /* SwiftClientTests.swift */; };
 		D0CB88F319FC64BC00DA6940 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB88F219FC64BC00DA6940 /* Request.swift */; };
+		D0EA6D6A1A09B208007CFA31 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EA6D691A09B208007CFA31 /* FormData.swift */; };
+		D0EA6D701A0B120F007CFA31 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = D0EA6D6F1A0B120F007CFA31 /* test.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +39,8 @@
 		D0CB88E719FC645300DA6940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0CB88E819FC645300DA6940 /* SwiftClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftClientTests.swift; sourceTree = "<group>"; };
 		D0CB88F219FC64BC00DA6940 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		D0EA6D691A09B208007CFA31 /* FormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
+		D0EA6D6F1A0B120F007CFA31 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 				D004FD911A0202AC007E3881 /* Body.swift */,
 				D004FD931A020308007E3881 /* Response.swift */,
 				D004FD951A020347007E3881 /* Client.swift */,
+				D0EA6D691A09B208007CFA31 /* FormData.swift */,
 			);
 			path = SwiftClient;
 			sourceTree = "<group>";
@@ -110,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				D0CB88E719FC645300DA6940 /* Info.plist */,
+				D0EA6D6F1A0B120F007CFA31 /* test.html */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -210,6 +216,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0EA6D701A0B120F007CFA31 /* test.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +232,7 @@
 				D0CB88F319FC64BC00DA6940 /* Request.swift in Sources */,
 				D004FD961A020347007E3881 /* Client.swift in Sources */,
 				D004FD901A02026B007E3881 /* Constants.swift in Sources */,
+				D0EA6D6A1A09B208007CFA31 /* FormData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
