@@ -117,6 +117,11 @@ Client().post(url).type("form").send([key : value, key2 : value2]);
 
 Client().post(url).type("html").send("<html>").send("</html>");
 ```
+#### Basic access authentication
+Performs basic HTTP authentication for a request.
+```swift
+Client().get(url).auth("username", "password");
+```
 #### Multipart Requests / File Uploads
 Multipart requests can be made with fields and attaching files.  The content-type is set automatically with this type of request.  If a path is attached that does not exist, the contents of the attachment will be empty.
 
