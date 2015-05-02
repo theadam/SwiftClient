@@ -11,12 +11,12 @@ import Foundation
 
 public class Response{
     
-    public let text: String?;
-    public let data: NSData?;
+    public var text: String?;
+    public var data: NSData?;
     public var body: AnyObject?;
     
-    public let type: String?;
-    public let charset: String?;
+    public var type: String?;
+    public var charset: String?;
     
     public let status: Int;
     public let statusType: Int;
@@ -37,7 +37,7 @@ public class Response{
     
     public let request:Request;
     
-    public let headers: [String : String];
+    public var headers: [String : String];
     
     private func trim(s:String) -> String{
         return s.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
@@ -63,7 +63,7 @@ public class Response{
         // status / class
         self.status = status;
         self.statusType = type;
-        
+
         // basics
         self.info = 1 == type;
         self.ok = 2 == type;
@@ -85,7 +85,7 @@ public class Response{
         for (key, value) in response.allHeaderFields {
             headers.updateValue(value.description, forKey: key.description.lowercaseString);
         }
-        
+
         if let type = headers["content-type"] {
             var typeArray = type.componentsSeparatedByString(";");
             self.type = trim(typeArray.removeAtIndex(0));

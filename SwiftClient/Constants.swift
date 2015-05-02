@@ -25,7 +25,7 @@ internal func stringToData(string:String) -> NSData {
 }
 
 internal func dataToString(data:NSData) -> String {
-    return NSString(data: data, encoding: 1)!
+    return NSString(data: data, encoding: 1)! as String
 }
 
 internal func queryPair(key:String, value:AnyObject) -> String{
@@ -87,7 +87,7 @@ private func serializeForm(data:AnyObject) -> NSData? {
     if let queryString = queryString(data) {
         return stringToData(queryString)
     }
-    else if let dataString = (data as? String ?? toString(data)) {
+    else if let dataString = (data as? String ?? toString(data)) as String? {
         return stringToData(dataString)
     }
     
