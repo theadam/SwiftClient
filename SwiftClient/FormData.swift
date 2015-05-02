@@ -35,7 +35,7 @@ internal class FormData {
         
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, type as NSString, nil)?.takeRetainedValue() {
             if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
-                return mimetype as NSString
+                return mimetype as String
             }
         }
         return "application/octet-stream";
