@@ -1,4 +1,4 @@
 language: objective-c
- 
+osx_image: xcode63 
 script:
-- xcodebuild build -scheme SwiftClient -destination 'platform=iOS Simulator,name=iPhone 6,OS=8.3'
+- xcodebuild build -scheme SwiftClient -destination 'platform=iOS Simulator,name=iPhone 6'
