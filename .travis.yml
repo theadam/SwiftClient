@@ -1,4 +1,9 @@
 language: objective-c
-osx_image: xcode63 
-script:
-- xcodebuild test -project SwiftClient.xcodeproj -scheme SwiftClient -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 6"
+
+before_install:
+  - brew update
+  - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
+
+script: 
+  - xctool clean test -project SwiftClient.xcodeproj -scheme SwiftClient -sdk iphonesimulator
+
