@@ -1,4 +1,4 @@
-# SwiftClient
+# SwiftClient [![Build Status](https://travis-ci.org/theadam/SwiftClient.png)](https://travis-ci.org/theadam/SwiftClient)
 A Simple HTTP Client written in Swift
 
 ## Installation
