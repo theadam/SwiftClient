@@ -1,9 +1,8 @@
 language: objective-c
-
+osx_image: beta-xcode6.3
 before_install:
   - brew update
   - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
 
-script: 
+script:
   - xctool clean test -project SwiftClient.xcodeproj -scheme SwiftClient -sdk iphonesimulator
-
