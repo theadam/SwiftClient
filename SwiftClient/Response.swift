@@ -99,7 +99,7 @@ public class Response{
             self.text = dataToString(data);
             if let type = self.type {
                 if let parser = parsers[type] {
-                    self.body = parser(data, self.text!);
+                    self.body = parser(data, string:self.text!);
                 }
             }
         }

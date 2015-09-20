@@ -14,7 +14,7 @@ class SwiftClientTests: XCTestCase {
     private func wait(){
         waitForExpectationsWithTimeout(5, handler: { error in
             if error != nil {
-                println("test timed out with error \(error)");
+                print("test timed out with error \(error)");
             }
         });
     }
@@ -305,7 +305,7 @@ class SwiftClientTests: XCTestCase {
             let json = Body(res.body);
             XCTAssertEqual(json["authenticated"].value as! Int, 1, "authenticated should be equal to 1")
             XCTAssertEqual(json["user"].value as! String, "username", "user should be equal to 1")
-            println(json);
+            print(json);
             self.expectation.fulfill();
         }
         request.get("/hidden-basic-auth/username/password")
