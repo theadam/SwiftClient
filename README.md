@@ -1,5 +1,5 @@
 # SwiftClient [![Build Status](https://travis-ci.org/theadam/SwiftClient.png)](https://travis-ci.org/theadam/SwiftClient)
-A Simple HTTP Client written in Swift
+A Simple HTTP Client written in Swift 2.
 
 ## Installation
 1. If you are using git then add SwiftClient as a submodule using `git submodule add https://github.com/theadam/SwiftClient.git` otherwise download the project using `git clone https://github.com/theadam/SwiftClient.git` in your project folder.
@@ -176,7 +176,7 @@ Client().get(url).end(responseHandler, onError: errorHandler); // Overrides all 
 ```
 ## Response
 #### Fields
-`response.status` - The HTTP response status code.
+`response.status` - The HTTP response status code (Response.ResponseType).
 
 `response.text` - An optional string containing the text of the body of the response.
 
@@ -186,29 +186,7 @@ Client().get(url).end(responseHandler, onError: errorHandler); // Overrides all 
 
 `response.headers` - A dictionary of string to string containing the headers of the response.
 
-#### status code helpers
-Each of these booleans are helpers to determine the status of the Response
-
-`info` - 1xx
-
-`ok` - 2xx
-
-`clientError` - 4xx
-
-`serverError` - 5xx
-
-`error` - 4xx/5xx
-
-`accepted` - 202
-
-`noContent` - 404
-
-`badRequest` - 400
-
-`unauthorized` - 401
-
-`notAcceptable` - 406
-
-`notFound` - 404
-
-`forbidden` - 403
+## ResponseType
+ResponseType is a new enumeration brought into the client. Instead of having countless, memory allocated, booleans, we've got an enumeration. As before, you will be able to check all of the previously used HTTP status codes.  
+### BasicResponseType
+Enumeration based on statusType.
