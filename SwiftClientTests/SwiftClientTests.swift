@@ -14,7 +14,7 @@ class SwiftClientTests: XCTestCase {
     private func wait(){
         waitForExpectationsWithTimeout(5, handler: { error in
             if error != nil {
-                println("test timed out with error \(error)");
+                print("test timed out with error \(error)");
             }
         });
     }
@@ -46,7 +46,7 @@ class SwiftClientTests: XCTestCase {
     
     func testHeadersFromDictionary(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             // the service capitalizes the headers ....
             XCTAssertEqual(json["headers"]["X-Header-Key"].value as! String, "headerValue", "header should have been sent");
@@ -60,7 +60,7 @@ class SwiftClientTests: XCTestCase {
     
     func testHeadersFromKeyValue(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             // the service capitalizes the headers ....
             XCTAssertEqual(json["headers"]["X-Header-Key"].value as! String, "headerValue", "header should have been sent");
@@ -74,7 +74,7 @@ class SwiftClientTests: XCTestCase {
     
     func testHeadersMixture(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             // the service capitalizes the headers ....
             XCTAssertEqual(json["headers"]["X-Header-Key"].value as! String, "headerValue", "header should have been sent");
@@ -91,7 +91,7 @@ class SwiftClientTests: XCTestCase {
     
     func testRequestMiddleware(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             // the service capitalizes the headers ....
             XCTAssertEqual(json["headers"]["X-Header-Key"].value as! String, "headerValue", "header should have been sent");
@@ -105,7 +105,7 @@ class SwiftClientTests: XCTestCase {
     
     func testResponseMiddleware(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = res.body as! Body;
             // the service capitalizes the headers ....
             XCTAssertEqual(json["headers"]["X-Header-Key"].value as! String, "headerValue", "header should have been sent");
@@ -120,7 +120,7 @@ class SwiftClientTests: XCTestCase {
     
     func testType(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = res.body as! Body;
             // the service capitalizes the headers ....
             XCTAssertEqual(json["headers"]["Content-Type"].value as! String, "application/json", "header should have been sent");
@@ -144,7 +144,7 @@ class SwiftClientTests: XCTestCase {
     
     func testQueryAsDictionary(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             XCTAssertEqual(json["args"]["this has some spaces"].value! as! String, "this does too", "query arguments should match");
             self.expectation.fulfill();
@@ -157,7 +157,7 @@ class SwiftClientTests: XCTestCase {
     
     func testQueryAsKeyValue(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             XCTAssertEqual(json["args"]["key"].value! as! String, "value", "query arguments should match");
             self.expectation.fulfill();
@@ -170,7 +170,7 @@ class SwiftClientTests: XCTestCase {
     
     func testQueryMixture(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             XCTAssertEqual(json["args"]["key"].value! as! String, "value", "query arguments should match");
             XCTAssertEqual(json["args"]["this has some spaces"].value! as! String, "this does too", "query arguments should match");
@@ -186,7 +186,7 @@ class SwiftClientTests: XCTestCase {
     
     func testSendDictionary(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             XCTAssertEqual(json["json"]["key"].value! as! String, "value", "json should be equal");
             XCTAssertEqual(json["json"]["key2"].value! as! String, "value2", "json should be equal");
@@ -201,7 +201,7 @@ class SwiftClientTests: XCTestCase {
     
     func testSendString(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let form = Body(res.body);
             XCTAssertEqual(form["form"]["key"].value! as! String, "value", "json should be equal");
             XCTAssertEqual(form["form"]["key2"].value! as! String, "value2", "json should be equal");
@@ -216,7 +216,7 @@ class SwiftClientTests: XCTestCase {
     
     func testSendStringNoForm(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let content = Body(res.body);
             XCTAssertEqual(content["data"].value! as! String, "<html></html>", "html should have been sent");
             self.expectation.fulfill();
@@ -231,7 +231,7 @@ class SwiftClientTests: XCTestCase {
     
     func testSendOther(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let content = Body(res.body);
             XCTAssertEqual(content["json"].value! as! [Int], [1,2,3,4,5,6], "array should have been sent");
             self.expectation.fulfill();
@@ -245,7 +245,7 @@ class SwiftClientTests: XCTestCase {
     
     func testBaseUrlOverride(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             self.expectation.fulfill();
         }
         request.get("http://httpbin.org/headers")
@@ -301,11 +301,11 @@ class SwiftClientTests: XCTestCase {
     
     func testAuth(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             XCTAssertEqual(json["authenticated"].value as! Int, 1, "authenticated should be equal to 1")
             XCTAssertEqual(json["user"].value as! String, "username", "user should be equal to 1")
-            println(json);
+            print(json);
             self.expectation.fulfill();
         }
         request.get("/hidden-basic-auth/username/password")
@@ -316,7 +316,7 @@ class SwiftClientTests: XCTestCase {
     
     func testMultipartFields(){
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let form = Body(res.body)["form"];
             XCTAssertEqual(form["key"].value as! String, "value", "form data should have been sent");
             XCTAssertEqual(form["key2"].value as! String, "value2", "form data should have been sent");
@@ -333,7 +333,7 @@ class SwiftClientTests: XCTestCase {
         var htmlString1 = "<html><body>1</body></html>";
         var htmlString2 = "<html><body>2</body></html>";
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let files = Body(res.body)["files"];
             XCTAssertEqual(files["file1"].value as! String, htmlString1, "form data should have been sent");
             XCTAssertEqual(files["file2"].value as! String, htmlString2, "form data should have been sent");
@@ -350,7 +350,7 @@ class SwiftClientTests: XCTestCase {
         var htmlString1 = "<html><body>1</body></html>";
         var htmlString2 = "<html><body>2</body></html>";
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let files = Body(res.body)["files"];
             XCTAssertEqual(files["file1"].value as! String, htmlString1, "form data should have been sent");
             XCTAssertEqual(files["file2"].value as! String, htmlString2, "form data should have been sent");
@@ -371,7 +371,7 @@ class SwiftClientTests: XCTestCase {
     func testMultipartFilesWithMime(){
         var htmlString1 = "<html><body>1</body></html>";
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let files = Body(res.body)["files"];
             XCTAssertEqual(files["file1"].value as! String, htmlString1, "form data should have been sent");
             self.expectation.fulfill();
@@ -387,7 +387,7 @@ class SwiftClientTests: XCTestCase {
         var fileContents = NSString(data: NSData(contentsOfFile: filePath)!, encoding: NSUTF8StringEncoding)!;
         
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let files = Body(res.body)["files"];
             XCTAssertEqual(files["file1"].value as! NSString, fileContents, "form data should have been sent");
             self.expectation.fulfill();
@@ -403,7 +403,7 @@ class SwiftClientTests: XCTestCase {
         var fileContents = NSString(data: NSData(contentsOfFile: filePath)!, encoding: NSUTF8StringEncoding)!;
         
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let files = Body(res.body)["files"];
             XCTAssertEqual(files["file1"].value as! NSString, fileContents, "form data should have been sent");
             self.expectation.fulfill();
@@ -419,7 +419,7 @@ class SwiftClientTests: XCTestCase {
         var fileContents = NSString(data: NSData(contentsOfFile: filePath)!, encoding: NSUTF8StringEncoding)!;
         
         let done = { (res: Response) -> Void in
-            XCTAssertEqual(res.ok, true);
+            XCTAssertEqual(res.status, Response.ResponseType.OK);
             let files = Body(res.body)["files"];
             XCTAssertEqual(files["file1"].value as! NSString, fileContents, "form data should have been sent");
             self.expectation.fulfill();

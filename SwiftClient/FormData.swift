@@ -31,7 +31,7 @@ internal class FormData {
     }
     
     private func determineMimeType(filename:String) -> String {
-        let type = filename.pathExtension
+        let type = NSURL(string: filename)!.pathExtension!
         
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, type as NSString, nil)?.takeRetainedValue() {
             if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {

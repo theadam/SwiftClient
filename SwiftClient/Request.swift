@@ -90,7 +90,7 @@ public class Request {
     /// Adds query params on the URL from a dictionary
     public func query(query:[String : String]) -> Request{
         for (key,value) in query {
-            self.query.append(queryPair(key, value));
+            self.query.append(queryPair(key, value: value))
         }
         return self;
     }
@@ -200,7 +200,7 @@ public class Request {
     public func attach(name:String, _ path:String, _ filename:String? = nil, withMimeType mimeType:String? = nil) -> Request {
         var basename:String! = filename;
         if(filename == nil){
-            basename = path.lastPathComponent;
+            basename = NSURL(string: path)!.lastPathComponent;
         }
         let data = NSData(contentsOfFile: path)
         
@@ -230,7 +230,7 @@ public class Request {
             if(self.formData != nil) {
                 request.HTTPBody = self.formData!.getBody();
                 self.type(self.formData!.getContentType());
-                self.set("Content-Length", toString(request.HTTPBody?.length));
+                self.set("Content-Length", String(request.HTTPBody?.length));
             }
             else if(self.data != nil){
                 if let data = self.data! as? NSData {
@@ -241,7 +241,7 @@ public class Request {
                         request.HTTPBody = serializer(self.data!)
                     }
                     else {
-                        request.HTTPBody = stringToData(toString(self.data!))
+                        request.HTTPBody = stringToData(String(self.data!))
                     }
                 }
             }
@@ -252,15 +252,15 @@ public class Request {
         }
                 
         let task = session.dataTaskWithRequest(request, completionHandler:
-            {(data: NSData?, response: NSURLResponse?, error: NSError!) -> Void in
+            {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
                 if let response = response as? NSHTTPURLResponse {
                     done(self.transformer(Response(response, self, data)));
                 }
                 else if errorHandler != nil {
-                    errorHandler!(error);
+                    errorHandler!(error!);
                 }
                 else {
-                    self.errorHandler(error);
+                    self.errorHandler(error!);
                 }
             }
         );
