@@ -11,6 +11,7 @@ import Foundation
 
 public class Response{
     
+    // MARK: - Variables and constraints
     public var text: String?;
     public var data: NSData?;
     public var body: AnyObject?;
@@ -18,31 +19,22 @@ public class Response{
     public var type: String?;
     public var charset: String?;
     
-    public let status: Int;
-    public let statusType: Int;
-    
-    public let info: Bool;
-    public let ok: Bool;
-    public let clientError: Bool;
-    public let serverError: Bool;
     public let error: Bool;
     
-    public let accepted: Bool;
-    public let noContent: Bool;
-    public let badRequest: Bool;
-    public let unauthorized: Bool;
-    public let notAcceptable: Bool;
-    public let notFound: Bool;
-    public let forbidden: Bool;
+    public let status: ResponseType
+    public let basicStatus: BasicResponseType
     
     public let request:Request;
     
     public var headers: [String : String];
     
+    // MARK: - Methods and class initializers,
+    // Trimming a string
     private func trim(s:String) -> String{
         return s.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
     }
     
+    // Splitting content parameters
     private func splitContentParams(params: [String]) -> [String : String]{
         return params.reduce(Dictionary(), combine: {(var map: [String : String], pair: String) -> [String : String] in
             var pairArray = pair.componentsSeparatedByString("=");
@@ -53,57 +45,118 @@ public class Response{
         });
     }
     
+    // Initializer of the Response class.
     init(_ response: NSHTTPURLResponse, _ request: Request, _ rawData: NSData?){
-        
         self.request = request;
-        
-        let status = response.statusCode;
         let type = response.statusCode / 100 | 0;
-        
-        // status / class
-        self.status = status;
-        self.statusType = type;
+        self.error = type == 4 || type == 5
 
         // basics
-        self.info = 1 == type;
-        self.ok = 2 == type;
-        self.clientError = 4 == type;
-        self.serverError = 5 == type;
-        self.error = 4 == type || 5 == type;
+        switch(type) {
+        case 1:
+            self.basicStatus = BasicResponseType.Info
+            break
+        case 2:
+            self.basicStatus = BasicResponseType.OK
+            break
+        case 4:
+            self.basicStatus = BasicResponseType.ClientError
+            break
+        case 5:
+            self.basicStatus = BasicResponseType.ServerError
+            break
+        default:
+            self.basicStatus = BasicResponseType.Unknown
+            print("Couldn't figure out the basic status code. (\(type))")
+            break
+        }
         
         // sugar
-        self.accepted = 202 == status;
-        self.noContent = 204 == status
-        self.badRequest = 400 == status;
-        self.unauthorized = 401 == status;
-        self.notAcceptable = 406 == status;
-        self.notFound = 404 == status;
-        self.forbidden = 403 == status;
+        switch(response.statusCode) {
+        case 200:
+            self.status = ResponseType.OK
+            break
+        case 201:
+            self.status = ResponseType.Created
+            break
+        case 202:
+            self.status = ResponseType.Accepted
+            break
+        case 204:
+            self.status = ResponseType.NoContent
+            break
+        case 400:
+            self.status = ResponseType.BadRequest
+            break
+        case 401:
+            self.status = ResponseType.Unauthorized
+            break
+        case 403:
+            self.status = ResponseType.Forbidden
+            break
+        case 404:
+            self.status = ResponseType.NotFound
+            break
+        case 406:
+            self.status = ResponseType.NotAcceptable
+            break
+        default:
+            self.status = ResponseType.Unknown
+            print("Couldn't set responseType (\(response.statusCode))")
+            break
+        }
         
         // header filling
-        headers = Dictionary();
+        headers = Dictionary()
         for (key, value) in response.allHeaderFields {
-            headers.updateValue(value.description, forKey: key.description.lowercaseString);
-        }
-
-        if let type = headers["content-type"] {
-            var typeArray = type.componentsSeparatedByString(";");
-            self.type = trim(typeArray.removeAtIndex(0));
-            let params = splitContentParams(typeArray);
-            self.charset = params["charset"];
+            headers.updateValue(value.description, forKey: key.description.lowercaseString)
         }
         
-        self.data = rawData;
-        self.body = rawData;
+        // filling charset
+        if let type = headers["content-type"] {
+            var typeArray = type.componentsSeparatedByString(";")
+            self.type = trim(typeArray.removeAtIndex(0))
+            let params = splitContentParams(typeArray)
+            self.charset = params["charset"]
+        }
+        
+        // setting raw data into variables.
+        self.data = rawData
+        self.body = rawData
         if let data = rawData {
-            self.text = dataToString(data);
+            self.text = dataToString(data)
             if let type = self.type {
                 if let parser = parsers[type] {
-                    self.body = parser(data, self.text!);
+                    self.body = parser(data, string:self.text!)
                 }
             }
         }
     }
+    
+    // MARK: - Response enums.
+    // ResponseType enum. Basically the status code of the response
+    public enum ResponseType {
+        case OK             // 200
+        case Created        // 201
+        case Accepted       // 202
+        case NoContent      // 204
+        case BadRequest     // 400
+        case Unauthorized   // 401
+        case Forbidden      // 403
+        case NotFound       // 404
+        case NotAcceptable  // 406
+        case Unknown        // ???
+    }
+    
+    // BasicResponseType enum. Status codes divided by 100.
+    public enum BasicResponseType {
+        case Info           // 1
+        case OK             // 2
+        case ClientError    // 4
+        case ServerError    // 5
+        case Unknown        // ?
+    }
 }
+
 
 

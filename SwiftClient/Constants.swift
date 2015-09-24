@@ -9,7 +9,7 @@
 import Foundation
 
 internal func base64Encode(string:String) -> String {
-    return dataToString(stringToData(string).base64EncodedDataWithOptions(nil))
+    return dataToString(stringToData(string).base64EncodedDataWithOptions([]))
 }
 
 internal func uriDecode(string:String) -> String{
@@ -37,7 +37,7 @@ internal func queryString(query:AnyObject) -> String?{
     if let dict = query as? Dictionary<String, AnyObject> {
         pairs = Array()
         for (key, value) in dict {
-            pairs!.append(queryPair(key, value))
+            pairs!.append(queryPair(key, value: value))
         }
     }
     else if let array = query as? [String] {
@@ -45,7 +45,7 @@ internal func queryString(query:AnyObject) -> String?{
     }
     
     if let pairs = pairs {
-        return "&".join(pairs)
+        return pairs.joinWithSeparator("&")
     }
     
     return nil
@@ -53,8 +53,12 @@ internal func queryString(query:AnyObject) -> String?{
 
 // PARSERS
 private func parseJson(data:NSData, string: String) -> AnyObject?{
-    var error:NSError?
-    return NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(), error: &error)
+    do {
+        return try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+    } catch {
+        print(error)
+    }
+    return nil;
 }
 
 private func parseForm(data:NSData, string:String) -> AnyObject?{
@@ -74,8 +78,12 @@ private func parseForm(data:NSData, string:String) -> AnyObject?{
 //SERIALIZERS
 private func serializeJson(data:AnyObject) -> NSData? {
     if(data as? Array<AnyObject> != nil || data as? Dictionary<String, AnyObject> != nil){
-        var error:NSError?
-        return NSJSONSerialization.dataWithJSONObject(data, options: NSJSONWritingOptions(), error: &error)
+        //var error:NSError?
+        do {
+            return try NSJSONSerialization.dataWithJSONObject(data, options: NSJSONWritingOptions())
+        } catch {
+            print(error)
+        }
     }
     else if let dataString = data as? String{
         return stringToData(dataString)
@@ -87,7 +95,7 @@ private func serializeForm(data:AnyObject) -> NSData? {
     if let queryString = queryString(data) {
         return stringToData(queryString)
     }
-    else if let dataString = (data as? String ?? toString(data)) as String? {
+    else if let dataString = (data as? String ?? String(data)) as String? {
         return stringToData(dataString)
     }
     
