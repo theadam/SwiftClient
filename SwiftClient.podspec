@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/theadam/SwiftClient'
   s.authors = { 'Adam Nalisnick' => 'theadam4257@gmail.com' }
   s.source = { :git => 'https://github.com/theadam/SwiftClient.git', :tag => s.version }
-  s.ios.deployment_target = '8.1'
+  s.ios.deployment_target = '9.0'
   s.source_files = 'SwiftClient/*.swift'
   s.requires_arc = true
 end
