@@ -54,7 +54,7 @@ public class Request {
     
     /// Stores a response transformer to be used on the received HTTP response
     public func transform(transformer: (Response) -> Response) -> Request{
-        var oldTransformer = self.transformer;
+        let oldTransformer = self.transformer;
         self.transformer = {(response:Response) -> Response in
             return transformer(oldTransformer(response));
         }
@@ -127,7 +127,7 @@ public class Request {
             self.data = oldData + data;
         }
         else{
-            var oldData = self.data as? String ?? "";
+            let oldData = self.data as? String ?? "";
             self.data = oldData + data;
         }
         
@@ -222,7 +222,7 @@ public class Request {
         
         let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self.delegate, delegateQueue: queue);
         
-        var request = NSMutableURLRequest(URL: NSURL(string: self.url)!, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: NSTimeInterval(self.timeout));
+        let request = NSMutableURLRequest(URL: NSURL(string: self.url)!, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: NSTimeInterval(self.timeout));
         
         request.HTTPMethod = self.method;
         

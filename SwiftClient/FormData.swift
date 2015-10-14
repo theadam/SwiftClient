@@ -48,7 +48,7 @@ internal class FormData {
     internal func getBody() -> NSData? {
         if(fields.count > 0 || files.count > 0){
             
-            var body = NSMutableData();
+            let body = NSMutableData();
             
             for (field) in fields {
                 appendField(body, field.name, field.value)

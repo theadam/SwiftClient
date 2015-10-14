@@ -21,7 +21,7 @@ public class Response{
     
     public let error: Bool;
     
-    public let status: ResponseType
+    public var status: ResponseType
     public let basicStatus: BasicResponseType
     
     public let request:Request;
@@ -100,6 +100,15 @@ public class Response{
         case 406:
             self.status = ResponseType.NotAcceptable
             break
+        case 412:
+            self.status = ResponseType.PreConditionFail
+            break
+        case 419:
+            self.status = ResponseType.AuthenticationTimeout
+            break
+        case 429:
+            self.status = ResponseType.TooManyRequests
+            break
         default:
             self.status = ResponseType.Unknown
             print("Couldn't set responseType (\(response.statusCode))")
@@ -136,16 +145,19 @@ public class Response{
     // MARK: - Response enums.
     // ResponseType enum. Basically the status code of the response
     public enum ResponseType {
-        case OK             // 200
-        case Created        // 201
-        case Accepted       // 202
-        case NoContent      // 204
-        case BadRequest     // 400
-        case Unauthorized   // 401
-        case Forbidden      // 403
-        case NotFound       // 404
-        case NotAcceptable  // 406
-        case Unknown        // ???
+        case OK                    // 200
+        case Created               // 201
+        case Accepted              // 202
+        case NoContent             // 204
+        case BadRequest            // 400
+        case Unauthorized          // 401
+        case Forbidden             // 403
+        case NotFound              // 404
+        case NotAcceptable         // 406
+        case PreConditionFail      // 412
+        case AuthenticationTimeout // 419
+        case TooManyRequests       // 429
+        case Unknown               // ???
     }
     
     // BasicResponseType enum. Status codes divided by 100.
