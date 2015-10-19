@@ -22,6 +22,7 @@ public class Response{
     public let error: Bool;
     
     public var status: ResponseType
+    public let statusCode: Int
     public let basicStatus: BasicResponseType
     
     public let request:Request;
@@ -48,6 +49,7 @@ public class Response{
     // Initializer of the Response class.
     init(_ response: NSHTTPURLResponse, _ request: Request, _ rawData: NSData?){
         self.request = request;
+        self.statusCode = response.statusCode
         let type = response.statusCode / 100 | 0;
         self.error = type == 4 || type == 5
 

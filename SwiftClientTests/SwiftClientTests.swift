@@ -488,6 +488,7 @@ class SwiftClientTests: XCTestCase {
             }
             
             let done = { (res: Response) -> Void in
+                XCTAssertEqual(res.statusCode, code.0)
                 XCTAssertEqual(res.status, code.1);
                 self.expectation.fulfill()
             }
