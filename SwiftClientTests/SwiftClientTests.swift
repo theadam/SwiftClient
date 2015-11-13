@@ -434,6 +434,7 @@ class SwiftClientTests: XCTestCase {
     func testBasicResponseTypeCodes(){
         let basicResponseCodes: [Int : Response.BasicResponseType] = [1: Response.BasicResponseType.Info,
             2: Response.BasicResponseType.OK,
+            3: Response.BasicResponseType.Redirection,
             4: Response.BasicResponseType.ClientError,
             5: Response.BasicResponseType.ServerError]
         
@@ -468,15 +469,44 @@ class SwiftClientTests: XCTestCase {
         let responseCodes: [Int : Response.ResponseType] = [200: Response.ResponseType.OK,
             201: Response.ResponseType.Created,
             202: Response.ResponseType.Accepted,
+            203: Response.ResponseType.NonAuthoritativeInfo,
             204: Response.ResponseType.NoContent,
+            205: Response.ResponseType.ResetContent,
+            206: Response.ResponseType.PartialContent,
+            207: Response.ResponseType.MultiStatus,
+            300: Response.ResponseType.MultipleChoices,
+            301: Response.ResponseType.MovedPermanently,
+            302: Response.ResponseType.Found,
+            303: Response.ResponseType.SeeOther,
+            304: Response.ResponseType.NotModified,
+            305: Response.ResponseType.UseProxy,
+            307: Response.ResponseType.TemporaryRedirect,
             400: Response.ResponseType.BadRequest,
             401: Response.ResponseType.Unauthorized,
+            402: Response.ResponseType.PaymentRequired,
             403: Response.ResponseType.Forbidden,
             404: Response.ResponseType.NotFound,
+            405: Response.ResponseType.MethodNotAllowed,
             406: Response.ResponseType.NotAcceptable,
+            407: Response.ResponseType.ProxyAuthentication,
+            408: Response.ResponseType.RequestTimeout,
+            409: Response.ResponseType.Conflict,
+            410: Response.ResponseType.Gone,
+            411: Response.ResponseType.LengthRequired,
             412: Response.ResponseType.PreConditionFail,
+            413: Response.ResponseType.RequestEntityTooLarge,
+            414: Response.ResponseType.RequestURITooLong,
+            415: Response.ResponseType.UnsupportedMediaType,
+            416: Response.ResponseType.RequestedRangeNotSatisfiable,
+            417: Response.ResponseType.ExpectationFailed,
             419: Response.ResponseType.AuthenticationTimeout,
-            429: Response.ResponseType.TooManyRequests]
+            429: Response.ResponseType.TooManyRequests,
+            500: Response.ResponseType.InternalServerError,
+            501: Response.ResponseType.NotImplemented,
+            502: Response.ResponseType.BadGateway,
+            503: Response.ResponseType.ServiceUnavailable,
+            504: Response.ResponseType.GatewayTimeout,
+            505: Response.ResponseType.HTTPVersionNotSupported]
         
         for code in responseCodes {
             
@@ -488,6 +518,7 @@ class SwiftClientTests: XCTestCase {
             }
             
             let done = { (res: Response) -> Void in
+                XCTAssertEqual(res.statusCode, code.0)
                 XCTAssertEqual(res.status, code.1);
                 self.expectation.fulfill()
             }
