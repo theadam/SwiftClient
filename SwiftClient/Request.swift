@@ -97,7 +97,7 @@ public class Request {
     
     /// Adds query params on the URL from a key and value
     public func query(query:String) -> Request{
-        self.query.append(query);
+        self.query.append(uriEncode(query));
         return self;
     }
     
@@ -124,7 +124,7 @@ public class Request {
             if let stringData = self.data as? String {
                 oldData = stringData + "&";
             }
-            self.data = oldData + data;
+            self.data = oldData + uriEncode(data);
         }
         else{
             let oldData = self.data as? String ?? "";

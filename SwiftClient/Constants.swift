@@ -17,7 +17,9 @@ internal func uriDecode(string:String) -> String{
 }
 
 internal func uriEncode(string:AnyObject) -> String{
-    return string.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())!
+    let allowedCharacters = NSCharacterSet(charactersInString:" \"#%/<>?@\\^`{}[]|&+").invertedSet
+
+    return string.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacters)!
 }
 
 internal func stringToData(string:String) -> NSData {

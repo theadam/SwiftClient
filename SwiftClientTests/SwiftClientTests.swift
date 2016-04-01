@@ -161,10 +161,12 @@ class SwiftClientTests: XCTestCase {
             XCTAssertEqual(res.status, Response.ResponseType.OK);
             let json = Body(res.body);
             XCTAssertEqual(json["args"]["key"].value! as? String, "value", "query arguments should match");
+            XCTAssertEqual(json["args"]["key2"].value! as? String, "value+", "query arguments should match");
             self.expectation.fulfill();
         }
         request.get("/get")
             .query("key=value")
+            .query("key2=value+")
             .end(done, onError: self.defaultError);
         wait();
     }
@@ -206,11 +208,13 @@ class SwiftClientTests: XCTestCase {
             let form = Body(res.body);
             XCTAssertEqual(form["form"]["key"].value! as? String, "value", "json should be equal");
             XCTAssertEqual(form["form"]["key2"].value! as? String, "value2", "json should be equal");
+            XCTAssertEqual(form["form"]["key3"].value! as? String, "+foo+", "json should be equal");
             self.expectation.fulfill();
         }
         request.post("/post")
             .send("key=value")
             .send("key2=value2")
+            .send("key3=+foo+")
             .end(done, onError: self.defaultError);
         wait();
     }
