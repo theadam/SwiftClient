@@ -27,7 +27,7 @@ internal func stringToData(string:String) -> NSData {
 }
 
 internal func dataToString(data:NSData) -> String {
-    return NSString(data: data, encoding: 1)! as String
+    return NSString(data: data, encoding: NSUTF8StringEncoding)! as String
 }
 
 internal func queryPair(key:String, value:AnyObject) -> String{
