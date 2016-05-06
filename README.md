@@ -60,11 +60,10 @@ var client = Client()
 
 // GET http://myapi.org/get?key=value&key2=value2
 client.get("/get")
-	.query("key", "value")
-	.query("key2", "value2")
+	.query(["key": "value", "key2": "value2"])
 	.set("header", "headerValue")
 	.end({(res:Response) -> Void in
-		if(res.ok) { // status of 2xx
+		if(res.basicStatus == .OK) { // status of 2xx
 			handleResponseJson(res.body)
 		}
 		else {
