@@ -20,6 +20,29 @@ github "theadam/SwiftClient" ~> 2.0.3
 
 Run `carthage update` to build the framework and drag the built `SwiftClient.framework` into your Xcode project.
 
+### CocoaPods
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+To integrate `SwiftClient` into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+platform :ios, '9.0'
+
+use_frameworks!
+
+pod 'SwiftClient', '~> 2.0'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
 #### Manually
 1. If you are using git then add SwiftClient as a submodule using `git submodule add https://github.com/theadam/SwiftClient.git` otherwise download the project using `git clone https://github.com/theadam/SwiftClient.git` in your project folder.
 2. In Xcode, Right click on the blue project icon and select "Add files to..."  Select SwiftClient/SwiftClient.xcodeproj and click Add.
