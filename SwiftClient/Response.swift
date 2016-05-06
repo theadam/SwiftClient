@@ -37,7 +37,8 @@ public class Response{
     
     // Splitting content parameters
     private func splitContentParams(params: [String]) -> [String : String]{
-        return params.reduce(Dictionary(), combine: {(var map: [String : String], pair: String) -> [String : String] in
+        return params.reduce(Dictionary(), combine: {(map: [String : String], pair: String) -> [String : String] in
+            var map = map
             var pairArray = pair.componentsSeparatedByString("=");
             if(pairArray.count == 2){
                 map.updateValue(self.trim(pairArray[1]), forKey: self.trim(pairArray[0]).lowercaseString)
