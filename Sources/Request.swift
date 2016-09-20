@@ -9,23 +9,23 @@
 import Foundation
 
 
-private let errorHandler = {(error:NSError) -> Void in };
+private let errorHandler = {(error:Error) -> Void in };
 
 /// Class for handling request building and sending
-public class Request {
+open class Request {
     
-    var data:AnyObject?;
+    var data:Any?;
     var headers: [String : String];
-    public var url:String;
+    open var url:String;
     let method: String;
-    var delegate: NSURLSessionDelegate?;
+    var delegate: URLSessionDelegate?;
     var timeout:Double;
     var transformer:(Response) -> Response = {$0};
     var query:[String] = Array();
-    var errorHandler:((NSError) -> Void);
+    var errorHandler:((Error) -> Void);
     var formData:FormData?;
     
-    internal init(_ method: String, _ url: String, _ errorHandler:(NSError) -> Void){
+    internal init(method: String, url: String, errorHandler:@escaping (Error) -> Void){
         self.method = method;
         self.url = url;
         self.headers = Dictionary();
@@ -34,26 +34,26 @@ public class Request {
     }
     
     /// Sets headers on the request from a dictionary
-    public func set(headers: [String:String]) -> Request{
+    open func set(headers: [String:String]) -> Request{
         for(key, value) in headers {
-            self.set(key, value);
+            _ = self.set(key: key, value: value);
         }
         return self;
     }
     
     /// Sets headers on the request from a key and value
-    public func set(key: String, _ value: String) -> Request{
+    open func set(key: String, value: String) -> Request{
         self.headers[key] = value;
         return self;
     }
     
     /// Executs a middleware function on the request
-    public func use(middleware: (Request) -> Request) -> Request{
+    open func use(middleware: (Request) -> Request) -> Request{
         return middleware(self);
     }
     
     /// Stores a response transformer to be used on the received HTTP response
-    public func transform(transformer: (Response) -> Response) -> Request{
+    open func transform(transformer: @escaping (Response) -> Response) -> Request{
         let oldTransformer = self.transformer;
         self.transformer = {(response:Response) -> Response in
             return transformer(oldTransformer(response));
@@ -65,50 +65,51 @@ public class Request {
     /// ex: json, html, form, urlencoded, form, form-data, xml
     ///
     /// When not using shorthand, the value is used directory.
-    public func type(type:String) -> Request {
-        self.set("content-type", (types[type] ?? type));
+    open func type(type:String) -> Request {
+        _ = self.set(key: "content-type", value: (types[type] ?? type));
         return self;
     }
     
     /// Gets the header value for the case insensitive key passed
-    public func getHeader(header:String) -> String? {
-        return self.headers[header.lowercaseString];
+    open func getHeader(header:String) -> String? {
+        return self.headers[header.lowercased()];
     }
     
     /// Gets the content-type of the request
     private func getContentType() -> String?{
-        return getHeader("content-type");
+        return getHeader(header: "content-type");
     }
     
     /// Sets the type if not set
     private func defaultToType(type:String){
         if self.getContentType() == nil {
-            self.type(type);
+            _ = self.type(type: type);
         }
     }
     
     /// Adds query params on the URL from a dictionary
-    public func query(query:[String : String]) -> Request{
+    open func query(query:[String : String]) -> Request{
         for (key,value) in query {
-            self.query.append(queryPair(key, value: value))
+            self.query.append(queryPair(key: key, value: value))
         }
         return self;
     }
     
     /// Adds query params on the URL from a key and value
-    public func query(query:String) -> Request{
-        self.query.append(uriEncode(query));
+    open func query(query:String) -> Request{
+        self.query.append(uriEncode(string: query));
         return self;
     }
     
     /// Handles adding a single key and value to the request body
-    private func _send(key: String, _ value: AnyObject) -> Request{
-        if var dict = self.data as? [String : AnyObject] {
+    private func _send(key: String, value: Any) -> Request{
+        if var dict = self.data as? [String : Any] {
             dict[key] = value;
             self.data = dict;
         }
         else{
-            self.data = [key : value];
+            let arrayData: [String: Any] = [key : value];
+            self.data = arrayData;
         }
         return self;
     }
@@ -117,18 +118,20 @@ public class Request {
     /// a string and the content type is form, & is also appended.  If the body
     /// is a string and the content-type is not a form, the string is merely appended.
     /// Otherwise, the body is set to the string.
-    public func send(data:String) -> Request{
-        defaultToType("form");
+    open func send(data:String) -> Request{
+        defaultToType(type: "form");
         if self.getContentType() == types["form"] {
             var oldData = "";
             if let stringData = self.data as? String {
                 oldData = stringData + "&";
             }
-            self.data = oldData + uriEncode(data);
+            let dataString: String = oldData + uriEncode(string: data);
+            self.data = dataString;
         }
         else{
             let oldData = self.data as? String ?? "";
-            self.data = oldData + data;
+            let dataString: String = oldData + data;
+            self.data = dataString;
         }
         
         return self;
@@ -137,11 +140,11 @@ public class Request {
     /// Sets the body of the request.  If the body is a Dictionary,
     /// and a dictionary is passed in, the two are merged.  Otherwise,
     /// the body is set directly to the passed data.
-    public func send(data:AnyObject) -> Request{
-        if let entries = data as? [String : AnyObject] {
-            defaultToType("json");
+    open func send(data:Any) -> Request{
+        if let entries = data as? [String : Any] {
+            defaultToType(type: "json");
             for (key, value) in entries {
-                self._send(key, value);
+                _ = self._send(key: key, value: value);
             }
         }
         else{
@@ -151,27 +154,27 @@ public class Request {
     }
     
     /// Sets the request's timeout interval
-    public func timeout(timeout:Double) -> Request {
+    open func timeout(timeout:Double) -> Request {
         self.timeout = timeout;
         return self;
     }
     
     /// Sets the delegate on the request
-    public func delegate(delegate:NSURLSessionDelegate) -> Request {
+    open func delegate(delegate:URLSessionDelegate) -> Request {
         self.delegate = delegate;
         return self;
     }
     
     /// Sets the error handler on the request
-    public func onError(errorHandler:(NSError) -> Void) -> Request {
+    open func onError(errorHandler:@escaping (Error) -> Void) -> Request {
         self.errorHandler = errorHandler;
         return self;
     }
     
     /// Adds Basic HTTP Auth to the request
-    public func auth(username:String, _ password:String) -> Request {
-        let authString = base64Encode(username + ":" + password);
-        self.set("authorization", "Basic \(authString)")
+    open func auth(username:String, password:String) -> Request {
+        let authString = base64Encode(string: username + ":" + password);
+        _ = self.set(key: "authorization", value: "Basic \(authString)")
         return self;
     }
     
@@ -184,77 +187,77 @@ public class Request {
     }
     
     /// Adds a field to a multipart request
-    public func field(name:String, _ value:String) -> Request {
-        self.getFormData().append(name, value);
+    open func field(name:String, value:String) -> Request {
+        self.getFormData().append(name: name, value: value);
         return self;
     }
     
     /// Attached a file to a multipart request.  If the mimeType isnt given, it will be inferred.
-    public func attach(name:String, _ data:NSData, _ filename:String, withMimeType mimeType:String? = nil) -> Request {
-        self.getFormData().append(name, data, filename, mimeType)
+    open func attach(name:String, data:Data, filename:String, withMimeType mimeType:String? = nil) -> Request {
+        self.getFormData().append(name: name, data: data, filename: filename, mimeType: mimeType)
         return self
     }
     
     /// Attached a file to a multipart request.  If the mimeType isnt given, it will be inferred.  
     /// If the filename isnt given it will be pulled from the path
-    public func attach(name:String, _ path:String, _ filename:String? = nil, withMimeType mimeType:String? = nil) -> Request {
+    open func attach(name:String, path:String, filename:String? = nil, withMimeType mimeType:String? = nil) -> Request {
         var basename:String! = filename;
         if(filename == nil){
-            basename = NSURL(string: path)!.lastPathComponent;
+            basename = URL(string: path)!.lastPathComponent;
         }
-        let data = NSData(contentsOfFile: path)
+        let data = try? Data(contentsOf: URL(fileURLWithPath: path))
         
-        self.getFormData().append(name, data ?? NSData(), basename, mimeType)
+        self.getFormData().append(name: name, data: data ?? Data(), filename: basename, mimeType: mimeType)
         
         return self
     }
     
     /// Sends the request using the passed in completion handler and the optional error handler
-    public func end(done: (Response) -> Void, onError errorHandler: ((NSError) -> Void)? = nil) {
+    open func end(done: @escaping (Response) -> Void, onError errorHandler: ((Error) -> Void)? = nil) {
         if(self.query.count > 0){
-            if let queryString = queryString(self.query){
-                self.url += self.url.rangeOfString("?") != nil ? "&" : "?";
+            if let queryString = queryString(query: self.query){
+                self.url += self.url.range(of: "?") != nil ? "&" : "?";
                 self.url += queryString;
             }
         }
         
-        let queue = NSOperationQueue();
+        let queue = OperationQueue();
         
-        let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self.delegate, delegateQueue: queue);
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self.delegate, delegateQueue: queue);
         
-        let request = NSMutableURLRequest(URL: NSURL(string: self.url)!, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: NSTimeInterval(self.timeout));
+        var request = URLRequest(url: URL(string: self.url)!, cachePolicy: URLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: TimeInterval(self.timeout));
         
-        request.HTTPMethod = self.method;
+        request.httpMethod = self.method;
         
         if(self.method != "GET" && self.method != "HEAD") {
             if(self.formData != nil) {
-                request.HTTPBody = self.formData!.getBody();
-                self.type(self.formData!.getContentType());
-                self.set("Content-Length", String(request.HTTPBody?.length));
+                request.httpBody = self.formData!.getBody() as Data?;
+                _ = self.type(type: self.formData!.getContentType());
+                _ = self.set(key: "Content-Length", value: String(describing: request.httpBody?.count));
             }
             else if(self.data != nil){
-                if let data = self.data! as? NSData {
-                    request.HTTPBody = data;
+                if let data = self.data as? Data {
+                    request.httpBody = data;
                 }
                 else if let type = self.getContentType(){
                     if let serializer = serializers[type]{
-                        request.HTTPBody = serializer(self.data!)
+                        request.httpBody = serializer(self.data!) as Data?
                     }
                     else {
-                        request.HTTPBody = stringToData(String(self.data!))
+                        request.httpBody = stringToData(string: String(describing: self.data!))
                     }
                 }
             }
         }
-        
+
         for (key, value) in self.headers {
             request.setValue(value, forHTTPHeaderField: key);
         }
                 
-        let task = session.dataTaskWithRequest(request, completionHandler:
-            {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-                if let response = response as? NSHTTPURLResponse {
-                    done(self.transformer(Response(response, self, data)));
+        let task = session.dataTask(with: request, completionHandler:
+            {(data: Data?, response: URLResponse?, error: Error?) -> Void in
+                if let response = response as? HTTPURLResponse {
+                    done(self.transformer(Response(response: response, request: self, rawData: data)));
                 }
                 else if errorHandler != nil {
                     errorHandler!(error!);
