@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'SwiftClient'
-  s.version = '2.0.3'
+  s.version = '3.0.0'
   s.license = 'MIT'
   s.summary = 'A simple HTTP client library written in Swift 2'
   s.homepage = 'https://github.com/theadam/SwiftClient'
