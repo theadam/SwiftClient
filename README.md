@@ -1,5 +1,5 @@
 # SwiftClient [![Build Status](https://travis-ci.org/theadam/SwiftClient.png)](https://travis-ci.org/theadam/SwiftClient) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods](https://img.shields.io/cocoapods/v/SwiftClient.svg)](https://cocoapods.org/pods/SwiftClient)
-A Simple HTTP Client written in Swift 2.
+A Simple HTTP Client written in Swift 3.
 
 ## Installation
 #### Carthage
