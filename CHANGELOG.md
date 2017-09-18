@@ -1,6 +1,17 @@
 # Changelog
 
-## [3.0.1](https://github.com/theadam/SwiftClient/tree/3.0.1) (2017-04-01)
+## [3.0.2](https://github.com/theadam/SwiftClient/tree/3.0.2) (2017-09-19)
+[Full Changelog](https://github.com/theadam/SwiftClient/compare/3.0.1...3.0.2)
+
+**Closed issues:**
+
+- Use with swift package manager [\#23](https://github.com/theadam/SwiftClient/issues/23)
+
+**Merged pull requests:**
+
+- Downgrade deploy target [\#24](https://github.com/theadam/SwiftClient/pull/24) ([SandroMachado](https://github.com/SandroMachado))
+
+## [3.0.1](https://github.com/theadam/SwiftClient/tree/3.0.1) (2017-03-31)
 [Full Changelog](https://github.com/theadam/SwiftClient/compare/3.0.0...3.0.1)
 
 **Merged pull requests:**
