@@ -15,7 +15,7 @@ $ brew install carthage
 To integrate `SwiftClient` into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "theadam/SwiftClient" ~> 3.0.2
+github "theadam/SwiftClient" ~> 3.0.3
 ```
 
 Run `carthage update` to build the framework and drag the built `SwiftClient.framework` into your Xcode project.
@@ -34,7 +34,7 @@ platform :ios, '9.0'
 
 use_frameworks!
 
-pod 'SwiftClient', '~> 3.0.2'
+pod 'SwiftClient', '~> 3.0.3'
 ```
 
 Then, run the following command:

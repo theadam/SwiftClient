@@ -1,6 +1,13 @@
 # Changelog
 
-## [3.0.2](https://github.com/theadam/SwiftClient/tree/3.0.2) (2017-09-19)
+## [3.0.3](https://github.com/theadam/SwiftClient/tree/3.0.3) (2017-09-19)
+[Full Changelog](https://github.com/theadam/SwiftClient/compare/3.0.2...3.0.3)
+
+**Merged pull requests:**
+
+- Set Swift language version [\#25](https://github.com/theadam/SwiftClient/pull/25) ([SandroMachado](https://github.com/SandroMachado))
+
+## [3.0.2](https://github.com/theadam/SwiftClient/tree/3.0.2) (2017-09-18)
 [Full Changelog](https://github.com/theadam/SwiftClient/compare/3.0.1...3.0.2)
 
 **Closed issues:**
