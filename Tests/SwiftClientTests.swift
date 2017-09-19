@@ -14,7 +14,7 @@ class SwiftClientTests: XCTestCase {
     private func wait(){
         waitForExpectations(timeout: 5, handler: { error in
             if error != nil {
-                print("test timed out with error \(error)");
+                print("test timed out with error \(String(describing: error))");
             }
         });
     }
