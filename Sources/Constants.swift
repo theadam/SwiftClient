@@ -119,7 +119,8 @@ internal let types = [
     "xml": "application/xml",
     "urlencoded": "application/x-www-form-urlencoded",
     "form": "application/x-www-form-urlencoded",
-    "form-data": "application/x-www-form-urlencoded"
+    "form-data": "application/x-www-form-urlencoded",
+    "text": "text/plain"
 ]
 
 internal let serializers = [

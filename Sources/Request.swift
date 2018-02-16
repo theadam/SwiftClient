@@ -62,7 +62,7 @@ open class Request {
     }
     
     /// Sets the content-type.  Can be set using shorthand.
-    /// ex: json, html, form, urlencoded, form, form-data, xml
+    /// ex: json, html, form, urlencoded, form, form-data, xml, text
     ///
     /// When not using shorthand, the value is used directory.
     open func type(type:String) -> Request {
