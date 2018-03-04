@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.4](https://github.com/theadam/SwiftClient/tree/3.0.4) (2018-03-04)
+[Full Changelog](https://github.com/theadam/SwiftClient/compare/3.0.3...3.0.4)
+
+**Merged pull requests:**
+
+- Add text/plain to content-type types [\#26](https://github.com/theadam/SwiftClient/pull/26) ([diogoguimaraes](https://github.com/diogoguimaraes))
+
 ## [3.0.3](https://github.com/theadam/SwiftClient/tree/3.0.3) (2017-09-19)
 [Full Changelog](https://github.com/theadam/SwiftClient/compare/3.0.2...3.0.3)
 
